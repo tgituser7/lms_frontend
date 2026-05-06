@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { AdminAuthProvider } from '@/context/AdminAuthContext';
+import { ToastProvider } from '@/context/ToastContext';
 
 export const metadata: Metadata = {
   title: 'Admin Login — LMS',
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <AdminAuthProvider>
-      {children}
+      <ToastProvider>
+        {children}
+      </ToastProvider>
     </AdminAuthProvider>
   );
 }

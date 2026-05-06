@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { adminAPI } from '@/lib/api';
 import { Course, User } from '@/types';
+import { useToast } from '@/context/ToastContext';
 
 const levelColors: Record<string, string> = {
   beginner: 'bg-green-100 text-green-700',
@@ -17,6 +18,8 @@ export default function AdminCoursesPage() {
   const [instructors, setInstructors] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [assigning, setAssigning] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const toast = useToast();
 
   useEffect(() => {
     Promise.all([adminAPI.getCourses(), adminAPI.getUsers('instructor')])
@@ -33,8 +36,9 @@ export default function AdminCoursesPage() {
       const res = await adminAPI.assignInstructor(courseId, instructorId);
       setCourses((prev) => prev.map((c) => c._id === courseId ? res.data.course : c));
       setAssigning(null);
+      toast('Instructor assigned successfully', 'success');
     } catch {
-      alert('Failed to assign instructor');
+      toast('Failed to assign instructor', 'error');
     }
   };
 
@@ -42,8 +46,23 @@ export default function AdminCoursesPage() {
     try {
       const res = await adminAPI.togglePublish(courseId);
       setCourses((prev) => prev.map((c) => c._id === courseId ? res.data.course : c));
+      toast(`Course ${res.data.course.isPublished ? 'published' : 'unpublished'}`, 'success');
     } catch {
-      alert('Failed to update course');
+      toast('Failed to update course', 'error');
+    }
+  };
+
+  const handleDelete = async (courseId: string, title: string) => {
+    if (!confirm(`Delete "${title}"? This will permanently remove all chapters, files, and enrollments.`)) return;
+    setDeletingId(courseId);
+    try {
+      await adminAPI.deleteCourse(courseId);
+      setCourses((prev) => prev.filter((c) => c._id !== courseId));
+      toast(`"${title}" deleted`, 'success');
+    } catch {
+      toast('Failed to delete course', 'error');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -131,6 +150,12 @@ export default function AdminCoursesPage() {
                         <button onClick={() => handleTogglePublish(course._id)}
                           className="text-sm text-blue-500 hover:text-blue-700 font-medium transition-colors">
                           {course.isPublished ? 'Unpublish' : 'Publish'}
+                        </button>
+                        <button
+                          onClick={() => handleDelete(course._id, course.title)}
+                          disabled={deletingId === course._id}
+                          className="text-sm text-red-500 hover:text-red-700 font-medium transition-colors disabled:opacity-50">
+                          {deletingId === course._id ? '...' : 'Delete'}
                         </button>
                       </div>
                     </td>

@@ -5,26 +5,26 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { adminAPI } from '@/lib/api';
+import { useToast } from '@/context/ToastContext';
 
 export default function AddStudentPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const toast = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
     try {
       const res = await adminAPI.createUser({ ...form, role: 'student' });
       const newId = res.data.user.id || res.data.user._id;
       router.push(`/admin/students/${newId}/edit`);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to create student');
+      toast(err.response?.data?.message || 'Failed to create student', 'error');
     } finally {
       setLoading(false);
     }
@@ -38,7 +38,6 @@ export default function AddStudentPage() {
           <h1 className="text-2xl font-bold text-gray-900">Add Student</h1>
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-          {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-5 text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-4">
             {[
               { name: 'name', label: 'Full Name', type: 'text', placeholder: 'Jane Doe' },

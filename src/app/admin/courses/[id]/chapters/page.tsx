@@ -6,6 +6,7 @@ import Link from 'next/link';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { adminAPI } from '@/lib/api';
 import { Chapter } from '@/types';
+import { useToast } from '@/context/ToastContext';
 
 type ContentType = 'video' | 'youtube' | 'pdf' | 'summary' | 'text';
 
@@ -28,6 +29,7 @@ const contentIcon = (ch: Chapter) => {
 export default function AdminCourseChaptersPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const toast = useToast();
   const [courseTitle, setCourseTitle] = useState('');
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
@@ -145,7 +147,7 @@ export default function AdminCourseChaptersPage() {
       await adminAPI.deleteChapter(id, chapterId);
       setChapters((prev) => prev.filter((c) => c._id !== chapterId));
       if (editingChapter?._id === chapterId) setEditingChapter(null);
-    } catch { alert('Failed to delete chapter'); }
+    } catch { toast('Failed to delete chapter', 'error'); }
     finally { setDeletingId(null); }
   };
 

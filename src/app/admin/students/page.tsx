@@ -6,10 +6,12 @@ import { useRouter } from 'next/navigation';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { adminAPI } from '@/lib/api';
 import { User } from '@/types';
+import { useToast } from '@/context/ToastContext';
 
 export default function AdminStudentsPage() {
   const [students, setStudents] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const toast = useToast();
 
   useEffect(() => {
     adminAPI.getUsers('student')
@@ -18,13 +20,14 @@ export default function AdminStudentsPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Delete this student?')) return;
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Delete student "${name}"?`)) return;
     try {
       await adminAPI.deleteUser(id);
       setStudents((prev) => prev.filter((s) => s._id !== id));
+      toast(`Student "${name}" deleted`, 'success');
     } catch {
-      alert('Failed to delete student');
+      toast('Failed to delete student', 'error');
     }
   };
 
@@ -76,7 +79,7 @@ export default function AdminStudentsPage() {
                           className="text-green-600 hover:text-green-800 text-sm font-medium transition-colors">
                           Edit
                         </Link>
-                        <button onClick={() => handleDelete(s._id)} className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors">
+                        <button onClick={() => handleDelete(s._id, s.name)} className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors">
                           Delete
                         </button>
                       </div>

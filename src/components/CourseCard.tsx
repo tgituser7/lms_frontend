@@ -36,7 +36,7 @@ export default function CourseCard({ course }: CourseCardProps) {
           <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
             <span className="text-sm text-gray-500">By {course.instructor?.name}</span>
             <span className="font-semibold text-primary-600">
-              {course.price === 0 ? 'Free' : `$${course.price}`}
+              {course.price === 0 ? 'Free' : `₹${course.price}`}
             </span>
           </div>
         </div>

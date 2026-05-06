@@ -5,25 +5,25 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { adminAPI } from '@/lib/api';
+import { useToast } from '@/context/ToastContext';
 
 export default function AddInstructorPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '', bio: '' });
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const toast = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
     try {
       await adminAPI.createUser({ ...form, role: 'instructor' });
       router.push('/admin/instructors');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to create instructor');
+      toast(err.response?.data?.message || 'Failed to create instructor', 'error');
     } finally {
       setLoading(false);
     }
@@ -37,7 +37,6 @@ export default function AddInstructorPage() {
           <h1 className="text-2xl font-bold text-gray-900">Add Instructor</h1>
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-          {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-5 text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>

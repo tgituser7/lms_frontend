@@ -5,15 +5,15 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { adminAPI } from '@/lib/api';
+import { useToast } from '@/context/ToastContext';
 
 export default function EditInstructorPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const toast = useToast();
   const [form, setForm] = useState({ name: '', email: '', bio: '', password: '', confirmPassword: '' });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     adminAPI.getUser(id)
@@ -30,25 +30,21 @@ export default function EditInstructorPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
     if (form.password && form.password !== form.confirmPassword) {
-      setError('Passwords do not match');
-      return;
+      toast('Passwords do not match', 'error'); return;
     }
     if (form.password && form.password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
+      toast('Password must be at least 6 characters', 'error'); return;
     }
     setSaving(true);
     try {
       const payload: any = { name: form.name, email: form.email, bio: form.bio };
       if (form.password) payload.password = form.password;
       await adminAPI.updateUser(id, payload);
-      setSuccess('Instructor updated successfully');
+      toast('Instructor updated successfully', 'success');
       setForm((f) => ({ ...f, password: '', confirmPassword: '' }));
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to update instructor');
+      toast(err.response?.data?.message || 'Failed to update instructor', 'error');
     } finally {
       setSaving(false);
     }
@@ -71,9 +67,6 @@ export default function EditInstructorPage() {
         </div>
 
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-6">
-          {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">{error}</div>}
-          {success && <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">{success}</div>}
-
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Profile Info */}
             <div>

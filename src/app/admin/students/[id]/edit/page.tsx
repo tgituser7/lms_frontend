@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { adminAPI } from '@/lib/api';
+import { useToast } from '@/context/ToastContext';
 
 interface CourseItem {
   _id: string;
@@ -24,10 +25,9 @@ export default function EditStudentPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [form, setForm] = useState({ name: '', email: '', bio: '', password: '', confirmPassword: '' });
+  const toast = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   const [enrollments, setEnrollments] = useState<EnrollmentItem[]>([]);
   const [allCourses, setAllCourses] = useState<CourseItem[]>([]);
@@ -56,25 +56,21 @@ export default function EditStudentPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
     if (form.password && form.password !== form.confirmPassword) {
-      setError('Passwords do not match');
-      return;
+      toast('Passwords do not match', 'error'); return;
     }
     if (form.password && form.password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
+      toast('Password must be at least 6 characters', 'error'); return;
     }
     setSaving(true);
     try {
       const payload: any = { name: form.name, email: form.email, bio: form.bio };
       if (form.password) payload.password = form.password;
       await adminAPI.updateUser(id, payload);
-      setSuccess('Student updated successfully');
+      toast('Student updated successfully', 'success');
       setForm((f) => ({ ...f, password: '', confirmPassword: '' }));
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to update student');
+      toast(err.response?.data?.message || 'Failed to update student', 'error');
     } finally {
       setSaving(false);
     }
@@ -85,27 +81,30 @@ export default function EditStudentPage() {
 
   const handleEnroll = async () => {
     if (!selectedCourse) return;
+    const courseName = allCourses.find((c) => c._id === selectedCourse)?.title || 'course';
     setEnrollLoading(true);
     try {
-      const res = await adminAPI.enrollStudent(id, selectedCourse);
+      await adminAPI.enrollStudent(id, selectedCourse);
       const enrolled = await adminAPI.getStudentEnrollments(id);
       setEnrollments(enrolled.data.enrollments);
       setSelectedCourse('');
+      toast(`Enrolled in "${courseName}"`, 'success');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to enroll');
+      toast(err.response?.data?.message || 'Failed to enroll', 'error');
     } finally {
       setEnrollLoading(false);
     }
   };
 
-  const handleUnenroll = async (courseId: string) => {
-    if (!confirm('Remove this student from the course?')) return;
+  const handleUnenroll = async (courseId: string, courseName: string) => {
+    if (!confirm(`Remove student from "${courseName}"?`)) return;
     setUnenrollingId(courseId);
     try {
       await adminAPI.unenrollStudent(id, courseId);
       setEnrollments((prev) => prev.filter((e) => e.course._id !== courseId));
+      toast(`Removed from "${courseName}"`, 'success');
     } catch {
-      alert('Failed to unenroll');
+      toast('Failed to unenroll', 'error');
     } finally {
       setUnenrollingId(null);
     }
@@ -129,9 +128,6 @@ export default function EditStudentPage() {
 
         {/* Profile Form */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-6 mb-6">
-          {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">{error}</div>}
-          {success && <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">{success}</div>}
-
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Profile Information</h2>
@@ -227,7 +223,7 @@ export default function EditStudentPage() {
                   <div className="flex items-center gap-3 flex-shrink-0 ml-4">
                     <span className="text-xs text-gray-500">{e.progress || 0}% done</span>
                     <button
-                      onClick={() => handleUnenroll(e.course._id)}
+                      onClick={() => handleUnenroll(e.course._id, e.course.title)}
                       disabled={unenrollingId === e.course._id}
                       className="text-xs text-red-500 hover:text-red-700 font-medium transition-colors disabled:opacity-50"
                     >

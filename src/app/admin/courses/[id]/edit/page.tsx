@@ -6,6 +6,7 @@ import Link from 'next/link';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { adminAPI } from '@/lib/api';
 import { User } from '@/types';
+import { useToast } from '@/context/ToastContext';
 
 const CATEGORIES = ['Web Development', 'Data Science', 'Design', 'Business', 'Marketing', 'DevOps', 'Other'];
 
@@ -16,9 +17,9 @@ export default function AdminEditCoursePage() {
     title: '', description: '', category: '', level: '', price: '0', instructor: '', isPublished: false,
   });
   const [instructors, setInstructors] = useState<User[]>([]);
+  const toast = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     Promise.all([adminAPI.getCourse(id), adminAPI.getUsers('instructor')])
@@ -46,13 +47,13 @@ export default function AdminEditCoursePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setSaving(true);
     try {
       await adminAPI.updateCourse(id, { ...form, price: Number(form.price) });
+      toast('Course updated successfully', 'success');
       router.push('/admin/courses');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to update course');
+      toast(err.response?.data?.message || 'Failed to update course', 'error');
     } finally {
       setSaving(false);
     }
@@ -75,7 +76,6 @@ export default function AdminEditCoursePage() {
         </div>
 
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-          {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-5 text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Course Title</label>
@@ -110,7 +110,7 @@ export default function AdminEditCoursePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Price ($)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Price (₹)</label>
                 <input type="number" name="price" value={form.price} onChange={handleChange} min="0"
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" />
               </div>

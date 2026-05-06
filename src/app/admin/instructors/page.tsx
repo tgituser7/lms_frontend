@@ -5,10 +5,12 @@ import Link from 'next/link';
 import AdminGuard from '@/components/admin/AdminGuard';
 import { adminAPI } from '@/lib/api';
 import { User } from '@/types';
+import { useToast } from '@/context/ToastContext';
 
 export default function AdminInstructorsPage() {
   const [instructors, setInstructors] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const toast = useToast();
 
   useEffect(() => {
     adminAPI.getUsers('instructor')
@@ -17,13 +19,14 @@ export default function AdminInstructorsPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Delete this instructor?')) return;
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Delete instructor "${name}"?`)) return;
     try {
       await adminAPI.deleteUser(id);
       setInstructors((prev) => prev.filter((i) => i._id !== id));
+      toast(`Instructor "${name}" deleted`, 'success');
     } catch {
-      alert('Failed to delete instructor');
+      toast('Failed to delete instructor', 'error');
     }
   };
 
@@ -76,7 +79,7 @@ export default function AdminInstructorsPage() {
                           className="text-green-600 hover:text-green-800 text-sm font-medium transition-colors">
                           Edit
                         </Link>
-                        <button onClick={() => handleDelete(inst._id)} className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors">
+                        <button onClick={() => handleDelete(inst._id, inst.name)} className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors">
                           Delete
                         </button>
                       </div>

@@ -215,7 +215,7 @@ export default function CourseDetailPage() {
         <div className="lg:col-span-1">
           <div className="bg-white rounded-xl border border-gray-100 p-6 sticky top-24 shadow-sm">
             <div className="text-3xl font-bold text-gray-900 mb-1">
-              {course.price === 0 ? 'Free' : `$${course.price}`}
+              {course.price === 0 ? 'Free' : `₹${course.price}`}
             </div>
             <p className="text-sm text-gray-500 mb-6">{course.enrolledStudents?.length || 0} students enrolled</p>
 
