@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5000';
+const BACKEND_URL = "https://facechatappbackend.onrender.com" || 'http://localhost:5000';
 
 const nextConfig = {
   images: {
-    domains: ['localhost'],
+    domains: ['localhost','facechatappbackend.onrender.com'],
   },
   async rewrites() {
     return [
