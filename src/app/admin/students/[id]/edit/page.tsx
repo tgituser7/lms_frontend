@@ -185,7 +185,7 @@ export default function EditStudentPage() {
 
         {/* Course Enrollments */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Course Enrollments</h2>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Technology Enrollments</h2>
 
           {/* Enroll in a new course */}
           {availableCourses.length > 0 && (
@@ -195,7 +195,7 @@ export default function EditStudentPage() {
                 onChange={(e) => setSelectedCourse(e.target.value)}
                 className="flex-1 px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               >
-                <option value="">Select a course to enroll...</option>
+                <option value="">Select a technology to enroll...</option>
                 {availableCourses.map((c) => (
                   <option key={c._id} value={c._id}>{c.title}</option>
                 ))}
@@ -211,7 +211,7 @@ export default function EditStudentPage() {
           )}
 
           {enrollments.length === 0 ? (
-            <p className="text-sm text-gray-400 py-4 text-center">Not enrolled in any courses yet.</p>
+            <p className="text-sm text-gray-400 py-4 text-center">Not enrolled in any technologies yet.</p>
           ) : (
             <div className="space-y-2">
               {enrollments.map((e) => (

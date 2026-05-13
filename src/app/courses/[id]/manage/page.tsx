@@ -38,7 +38,7 @@ export default function ManageCoursePage() {
         setCourse(courseRes.data.course);
         setChapters(chapRes.data.chapters);
       } catch {
-        router.push('/courses');
+        router.push('/technologies');
       } finally {
         setLoading(false);
       }
@@ -48,7 +48,7 @@ export default function ManageCoursePage() {
 
   useEffect(() => {
     if (authLoading || loading) return;
-    if (!user || !isAssigned) router.replace(`/courses/${id}`);
+    if (!user || !isAssigned) router.replace(`/technologies/${id}`);
   }, [loading, authLoading, user, isAssigned, id, router]);
 
   const loadChapters = async () => {
@@ -88,8 +88,8 @@ export default function ManageCoursePage() {
     <div className="max-w-4xl mx-auto px-4 py-10">
       {/* Header */}
       <div className="flex items-center gap-3 mb-2">
-        <Link href={`/courses/${id}`} className="text-gray-400 hover:text-gray-600 transition-colors text-sm">
-          ← Back to Course
+        <Link href={`/technologies/${id}`} className="text-gray-400 hover:text-gray-600 transition-colors text-sm">
+          ← Back to Technology
         </Link>
       </div>
       <div className="flex items-start justify-between mb-8">

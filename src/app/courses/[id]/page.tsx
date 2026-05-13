@@ -56,7 +56,7 @@ export default function CourseDetailPage() {
           setChapters(chapRes.data.chapters);
         }
       } catch {
-        router.push('/courses');
+        router.push('/technologies');
       } finally {
         setLoading(false);
       }
@@ -221,16 +221,16 @@ export default function CourseDetailPage() {
 
             {isAssigned && (
               <Link
-                href={`/courses/${id}/manage`}
+                href={`/technologies/${id}/manage`}
                 className="w-full flex items-center justify-center gap-2 bg-primary-600 text-white py-2.5 rounded-xl font-semibold hover:bg-primary-700 transition-colors mb-3 text-sm"
               >
-                ✏️ Manage Course
+                ✏️ Manage Technology
               </Link>
             )}
 
             {user?.role === 'instructor' || user?.role === 'admin' ? (
               <div className="bg-gray-50 border border-gray-200 text-gray-500 rounded-lg p-3 text-sm text-center">
-                Instructors cannot enroll in courses
+                Instructors cannot enroll in technologies
               </div>
             ) : enrolled ? (
               <div className="text-center">

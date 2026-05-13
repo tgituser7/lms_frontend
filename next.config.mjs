@@ -13,6 +13,14 @@ const nextConfig = {
         source: '/api/:path*',
         destination: `${BACKEND_URL}/api/:path*`,
       },
+      {
+        source: '/technologies',
+        destination: '/courses',
+      },
+      {
+        source: '/technologies/:path*',
+        destination: '/courses/:path*',
+      },
     ];
   },
 };

@@ -46,9 +46,9 @@ export default function AdminCoursesPage() {
     try {
       const res = await adminAPI.togglePublish(courseId);
       setCourses((prev) => prev.map((c) => c._id === courseId ? res.data.course : c));
-      toast(`Course ${res.data.course.isPublished ? 'published' : 'unpublished'}`, 'success');
+      toast(`Technology ${res.data.course.isPublished ? 'published' : 'unpublished'}`, 'success');
     } catch {
-      toast('Failed to update course', 'error');
+      toast('Failed to update technology', 'error');
     }
   };
 
@@ -71,11 +71,11 @@ export default function AdminCoursesPage() {
       <div className="p-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Courses</h1>
-            <p className="text-gray-500 mt-1">{courses.length} courses total</p>
+            <h1 className="text-2xl font-bold text-gray-900">Technologies</h1>
+            <p className="text-gray-500 mt-1">{courses.length} technologies total</p>
           </div>
           <Link href="/admin/courses/add" className="bg-green-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm">
-            + Add Course
+            + Add Technology
           </Link>
         </div>
 
@@ -85,13 +85,13 @@ export default function AdminCoursesPage() {
           ) : courses.length === 0 ? (
             <div className="p-12 text-center">
               <p className="text-4xl mb-3">📚</p>
-              <p className="text-gray-500">No courses yet</p>
+              <p className="text-gray-500">No technologies yet</p>
             </div>
           ) : (
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  {['Course', 'Level', 'Instructor', 'Students', 'Status', 'Actions'].map((h) => (
+                  {['Technology', 'Level', 'Instructor', 'Students', 'Status', 'Actions'].map((h) => (
                     <th key={h} className={`px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide ${h === 'Actions' ? 'text-right' : 'text-left'}`}>{h}</th>
                   ))}
                 </tr>

@@ -36,7 +36,7 @@ export default function AddCoursePage() {
       await adminAPI.createCourse({ ...form, price: Number(form.price) });
       router.push('/admin/courses');
     } catch (err: any) {
-      toast(err.response?.data?.message || 'Failed to create course', 'error');
+      toast(err.response?.data?.message || 'Failed to create technology', 'error');
     } finally {
       setLoading(false);
     }
@@ -47,12 +47,12 @@ export default function AddCoursePage() {
       <div className="p-8 max-w-2xl">
         <div className="flex items-center gap-3 mb-8">
           <Link href="/admin/courses" className="text-gray-400 hover:text-gray-600 transition-colors">← Back</Link>
-          <h1 className="text-2xl font-bold text-gray-900">Add Course</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Add Technology</h1>
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Course Title</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Technology Title</label>
               <input name="title" value={form.title} onChange={handleChange} required
                 placeholder="e.g. Introduction to React"
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" />
@@ -60,7 +60,7 @@ export default function AddCoursePage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Description</label>
               <textarea name="description" value={form.description} onChange={handleChange} required rows={3}
-                placeholder="Course description..."
+                placeholder="Technology description..."
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none" />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -105,7 +105,7 @@ export default function AddCoursePage() {
             </div>
             <button type="submit" disabled={loading}
               className="w-full bg-green-600 text-white py-2.5 rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 mt-2">
-              {loading ? 'Creating...' : 'Create Course'}
+              {loading ? 'Creating...' : 'Create Technology'}
             </button>
           </form>
         </div>

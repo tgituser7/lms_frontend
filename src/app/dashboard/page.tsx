@@ -54,13 +54,13 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
         {user.role === 'student' ? (
           <>
-            <StatCard label="Enrolled Courses" value={enrollments.length} icon="📚" />
+            <StatCard label="Enrolled Technologies" value={enrollments.length} icon="📚" />
             <StatCard label="In Progress" value={enrollments.filter(e => e.progress > 0 && e.progress < 100).length} icon="⏳" />
             <StatCard label="Completed" value={enrollments.filter(e => e.progress === 100).length} icon="✅" />
           </>
         ) : (
           <>
-            <StatCard label="My Courses" value={myCourses.length} icon="🎓" />
+            <StatCard label="My Technologies" value={myCourses.length} icon="🎓" />
             <StatCard label="Published" value={myCourses.filter(c => c.isPublished).length} icon="✅" />
             <StatCard label="Total Students" value={myCourses.reduce((acc, c) => acc + (c.enrolledStudents?.length || 0), 0)} icon="👥" />
           </>
@@ -70,21 +70,21 @@ export default function DashboardPage() {
       {user.role === 'student' ? (
         <div>
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xl font-semibold text-gray-900">My Courses</h2>
-            <Link href="/courses" className="text-primary-600 text-sm font-medium hover:underline">Browse more →</Link>
+            <h2 className="text-xl font-semibold text-gray-900">My Technologies</h2>
+            <Link href="/technologies" className="text-primary-600 text-sm font-medium hover:underline">Browse more →</Link>
           </div>
           {enrollments.length === 0 ? (
             <div className="bg-white rounded-xl border border-gray-100 p-12 text-center">
               <p className="text-5xl mb-4">📖</p>
-              <p className="text-gray-600 font-medium mb-4">You haven&apos;t enrolled in any courses yet</p>
-              <Link href="/courses" className="bg-primary-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-primary-700 transition-colors inline-block">
+              <p className="text-gray-600 font-medium mb-4">You haven&apos;t enrolled in any technologies yet</p>
+              <Link href="/technologies" className="bg-primary-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-primary-700 transition-colors inline-block">
                 Explore Courses
               </Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {enrollments.map((enrollment) => (
-                <Link key={enrollment._id} href={`/courses/${enrollment.course._id}`}>
+                <Link key={enrollment._id} href={`/technologies/${enrollment.course._id}`}>
                   <div className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md transition-shadow cursor-pointer">
                     <h3 className="font-semibold text-gray-900 mb-1">{enrollment.course.title}</h3>
                     <p className="text-sm text-gray-500 mb-4">{enrollment.course.category}</p>
@@ -104,17 +104,17 @@ export default function DashboardPage() {
       ) : (
         <div>
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xl font-semibold text-gray-900">My Courses</h2>
+            <h2 className="text-xl font-semibold text-gray-900">My Technologies</h2>
           </div>
           {myCourses.length === 0 ? (
             <div className="bg-white rounded-xl border border-gray-100 p-12 text-center">
               <p className="text-5xl mb-4">🎓</p>
-              <p className="text-gray-600 font-medium mb-4">You haven&apos;t created any courses yet</p>
+              <p className="text-gray-600 font-medium mb-4">You haven&apos;t created any technologies yet</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {myCourses.map((course) => (
-                <Link key={course._id} href={`/courses/${course._id}`}>
+                <Link key={course._id} href={`/technologies/${course._id}`}>
                   <div className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md transition-shadow cursor-pointer">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">{course.category}</span>
@@ -125,7 +125,7 @@ export default function DashboardPage() {
                     <h3 className="font-semibold text-gray-900 mb-1">{course.title}</h3>
                     <p className="text-sm text-gray-500">{course.enrolledStudents?.length || 0} students enrolled</p>
                     <Link
-                      href={`/courses/${course._id}/manage`}
+                      href={`/technologies/${course._id}/manage`}
                       onClick={(e) => e.stopPropagation()}
                       className="mt-3 inline-flex items-center gap-1 text-xs text-primary-600 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-lg font-medium transition-colors"
                     >

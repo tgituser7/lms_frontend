@@ -164,7 +164,7 @@ export default function AdminCourseChaptersPage() {
       <div className="p-8 max-w-4xl">
         {/* Header */}
         <div className="flex items-center gap-2 mb-2 text-sm text-gray-400">
-          <Link href="/admin/courses" className="hover:text-gray-600 transition-colors">← Courses</Link>
+          <Link href="/admin/courses" className="hover:text-gray-600 transition-colors">← Technologies</Link>
           <span>/</span>
           <span className="text-gray-600 truncate max-w-xs">{courseTitle}</span>
         </div>

@@ -50,10 +50,10 @@ export default function AdminEditCoursePage() {
     setSaving(true);
     try {
       await adminAPI.updateCourse(id, { ...form, price: Number(form.price) });
-      toast('Course updated successfully', 'success');
+      toast('Technology updated successfully', 'success');
       router.push('/admin/courses');
     } catch (err: any) {
-      toast(err.response?.data?.message || 'Failed to update course', 'error');
+      toast(err.response?.data?.message || 'Failed to update technology', 'error');
     } finally {
       setSaving(false);
     }
@@ -72,13 +72,13 @@ export default function AdminEditCoursePage() {
       <div className="p-8 max-w-2xl">
         <div className="flex items-center gap-3 mb-8">
           <Link href="/admin/courses" className="text-gray-400 hover:text-gray-600 transition-colors text-sm">← Back</Link>
-          <h1 className="text-2xl font-bold text-gray-900">Edit Course</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Edit Technology</h1>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Course Title</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Technology Title</label>
               <input name="title" value={form.title} onChange={handleChange} required
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" />
             </div>

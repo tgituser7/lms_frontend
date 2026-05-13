@@ -13,7 +13,7 @@ const levelColors = {
 
 export default function CourseCard({ course }: CourseCardProps) {
   return (
-    <Link href={`/courses/${course._id}`}>
+    <Link href={`/technologies/${course._id}`}>
       <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden cursor-pointer h-full flex flex-col">
         <div className="bg-gradient-to-br from-primary-500 to-primary-700 h-40 flex items-center justify-center">
           {course.thumbnail ? (

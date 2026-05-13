@@ -10,14 +10,14 @@ export default function HomePage() {
             Learn Without Limits
           </h1>
           <p className="text-xl text-primary-100 mb-10 max-w-2xl mx-auto">
-            Access hundreds of courses taught by expert instructors. Level up your skills at your own pace.
+            Access hundreds of technologies taught by expert instructors. Level up your skills at your own pace.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/courses"
+              href="/technologies"
               className="bg-white text-primary-700 px-8 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors text-lg"
             >
-              Browse Courses
+              Browse Technologies
             </Link>
             <Link
               href="/login"
@@ -40,7 +40,7 @@ export default function HomePage() {
             {[
               { title: 'Expert Instructors', desc: 'Learn from industry professionals with real-world experience.', icon: '👨‍🏫' },
               { title: 'Track Your Progress', desc: 'Monitor your learning journey with detailed progress tracking.', icon: '📊' },
-              { title: 'Learn Anywhere', desc: 'Access your courses on any device, anytime, anywhere.', icon: '📱' },
+              { title: 'Learn Anywhere', desc: 'Access your technologies on any device, anytime, anywhere.', icon: '📱' },
             ].map((f) => (
               <div key={f.title} className="text-center p-8 rounded-2xl bg-gray-50 hover:bg-primary-50 transition-colors">
                 <div className="text-5xl mb-4">{f.icon}</div>

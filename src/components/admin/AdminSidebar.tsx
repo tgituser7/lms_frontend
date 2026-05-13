@@ -8,7 +8,7 @@ const navItems = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
   { href: '/admin/students', label: 'Students', icon: '🎓' },
   { href: '/admin/instructors', label: 'Instructors', icon: '👨‍🏫' },
-  { href: '/admin/courses', label: 'Courses', icon: '📚' },
+  { href: '/admin/courses', label: 'Technologies', icon: '📚' },
 ];
 
 export default function AdminSidebar() {

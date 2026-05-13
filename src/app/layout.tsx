@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'LMS - Learning Management System',
-  description: 'Learn and grow with our comprehensive courses',
+  description: 'Learn and grow with our comprehensive technologies',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

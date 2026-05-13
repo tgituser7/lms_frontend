@@ -20,7 +20,7 @@ export default function AdminDashboardPage() {
     ? [
         { label: 'Total Students', value: stats.totalStudents, icon: '🎓', color: 'bg-blue-500' },
         { label: 'Total Instructors', value: stats.totalInstructors, icon: '👨‍🏫', color: 'bg-purple-500' },
-        { label: 'Total Courses', value: stats.totalCourses, icon: '📚', color: 'bg-green-500' },
+        { label: 'Total Technologies', value: stats.totalCourses, icon: '📚', color: 'bg-green-500' },
         { label: 'Total Enrollments', value: stats.totalEnrollments, icon: '📝', color: 'bg-orange-500' },
       ]
     : [];
