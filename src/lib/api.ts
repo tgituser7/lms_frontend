@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-const API_BASE = "https://facechatappbackend.onrender.com/api";
+const API_BASE = "https://lms-backend-gd71.onrender.com/api";
 // const API_BASE = 'http://localhost:5000/api';
 
 const api = axios.create({
